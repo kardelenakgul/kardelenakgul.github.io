@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kardelen Akgül | kardelen.py — Veri Bilimi &amp; Analitiği</title>
+  <meta name="description" content="Kardelen Akgül (kardelen.py) kişisel portfolyo web sitesi. Veri Bilimi ve Analitiği projeleri, Medium yazıları ve akademik deneyimler." />
+
+  <!-- Google Fonts: Arayüz için Plus Jakarta Sans, logo ve etiketler için JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Özel Soft Pembe (Monokrom) Renk Paleti ve Font Yapılandırması -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            blush: {
+              bg: '#FCF8F8',       /* Ana sayfa arka planı */
+              surface: '#F6ECEE',  /* İkincil kart / yüzey */
+              pill: '#F3E3E6',     /* Etiket arka planı */
+              border: '#E9D5D9',   /* İnce 1px kenarlık */
+              accent: '#C07F8C',   /* Ana vurgu rengi (gül kurusu) */
+              hover: '#A96875',    /* Vurgu hover rengi */
+              tagText: '#6B444C',  /* Etiket metin rengi */
+              muted: '#735A5F',    /* İkincil / soluk metin */
+              ink: '#3A272B',      /* Ana başlık ve metin rengi */
+            },
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-blush-bg text-blush-ink font-sans antialiased selection:bg-blush-pill selection:text-blush-ink overflow-x-hidden">
+
+  <!-- ===================================================================== -->
+  <!-- 1. SABİT MİNİMAL ÜST MENÜ (STICKY FLAT NAVBAR)                        -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-50 bg-blush-bg border-b border-blush-border">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Sol: Monospace Marka Logosu -->
+        <a href="#anasayfa" class="font-mono text-base sm:text-lg font-semibold tracking-tight text-blush-ink hover:text-blush-accent transition-colors">
+          kardelen<span class="text-blush-accent">.py</span>
+        </a>
+
+        <!-- Sağ: Masaüstü Gezinme Linkleri -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-blush-muted" aria-label="Ana Menü">
+          <a href="#hakkimda" class="hover:text-blush-ink transition-colors">Hakkımda</a>
+          <a href="#projeler" class="hover:text-blush-ink transition-colors">Projeler</a>
+          <a href="#yazilar" class="hover:text-blush-ink transition-colors">Yazılar</a>
+          <a href="#deneyim" class="hover:text-blush-ink transition-colors">Deneyim</a>
+          <a href="#iletisim" class="hover:text-blush-ink transition-colors">İletişim</a>
+        </nav>
+
+        <!-- Mobil Menü Aç/Kapat Butonu -->
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Menüyü Aç/Kapat"
+          aria-expanded="false"
+          class="md:hidden p-2.5 rounded-lg border border-blush-border text-blush-ink hover:bg-blush-surface transition-colors"
+        >
+          <!-- Hamburger İkonu -->
+          <svg id="icon-open" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="7" y2="7"></line>
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="17" y2="17"></line>
+          </svg>
+          <!-- Kapatma İkonu -->
+          <svg id="icon-close" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Mobil Açılır Menü -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-blush-border bg-blush-bg px-5 py-3 space-y-1">
+      <a href="#hakkimda" class="mobile-link block px-3 py-2.5 rounded-lg text-sm font-medium text-blush-muted hover:text-blush-ink hover:bg-blush-surface transition-colors">Hakkımda</a>
+      <a href="#projeler" class="mobile-link block px-3 py-2.5 rounded-lg text-sm font-medium text-blush-muted hover:text-blush-ink hover:bg-blush-surface transition-colors">Projeler</a>
+      <a href="#yazilar" class="mobile-link block px-3 py-2.5 rounded-lg text-sm font-medium text-blush-muted hover:text-blush-ink hover:bg-blush-surface transition-colors">Yazılar</a>
+      <a href="#deneyim" class="mobile-link block px-3 py-2.5 rounded-lg text-sm font-medium text-blush-muted hover:text-blush-ink hover:bg-blush-surface transition-colors">Deneyim</a>
+      <a href="#iletisim" class="mobile-link block px-3 py-2.5 rounded-lg text-sm font-medium text-blush-muted hover:text-blush-ink hover:bg-blush-surface transition-colors">İletişim</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-5 sm:px-8">
+
+    <!-- ===================================================================== -->
+    <!-- 2. GİRİŞ BÖLÜMÜ (HERO SECTION)                                        -->
+    <!-- ===================================================================== -->
+    <section id="anasayfa" class="py-16 sm:py-24">
+      <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-10">
+
+        <!-- Sol: Tanıtım Metni ve Aksiyon Butonları -->
+        <div class="max-w-xl space-y-6 text-center md:text-left">
+          <!-- Düz Küçük Rozet -->
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-medium bg-blush-pill text-blush-tagText border border-blush-border">
+            Veri Bilimi &amp; Analitiği
+          </span>
+
+          <!-- Ana Başlık -->
+          <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-blush-ink leading-[1.18]">
+            Merhaba, ben Kardelen Akgül.
+          </h1>
+
+          <!-- Alt Başlık -->
+          <p class="text-base sm:text-lg text-blush-muted leading-relaxed">
+            Veriyi anlamlı içgörülere, fikirleri ise çalışan yazılım projelerine dönüştüren Veri Bilimi ve Analitiği öğrencisiyim.
+          </p>
+
+          <!-- Düz Aksiyon Butonları ve CV İndirme Linki -->
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-3.5 pt-2">
+            <a
+              href="#projeler"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium bg-blush-accent text-white hover:bg-blush-hover transition-colors"
+            >
+              Projelerimi İncele
+            </a>
+            <a
+              href="#iletisim"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium bg-white text-blush-ink border border-blush-border hover:bg-blush-surface transition-colors"
+            >
+              İletişime Geç
+            </a>
+            <button
+              id="cv-download-btn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium text-blush-muted hover:text-blush-ink underline underline-offset-4 decoration-blush-border hover:decoration-blush-accent transition-colors"
+            >
+              CV İndir
+              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" x2="12" y1="15" y2="3"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sağ: Profil Fotoğrafı (GitHub Pages'te aynı klasöre profil.jpg yüklendiğinde görünür) -->
+        <div class="shrink-0">
+          <img
+            src="profil.jpg"
+            alt="Kardelen Akgül"
+            onerror="this.onerror=null;this.classList.remove('-scale-x-100');this.src='https://placehold.co/224x224/F3E3E6/6B444C?text=Kardelen';"
+            class="w-44 h-44 sm:w-56 sm:h-56 rounded-full object-cover object-top border-4 border-blush-border -scale-x-100"
+          />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 3. HAKKIMDA & YETKİNLİKLER                                            -->
+    <!-- ===================================================================== -->
+    <section id="hakkimda" class="py-16 sm:py-20 border-t border-blush-border">
+      <div class="space-y-10">
+
+        <!-- Başlık ve Kısa Biyografi -->
+        <div class="max-w-2xl space-y-4">
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-blush-ink">
+            Hakkımda &amp; Yetkinlikler
+          </h2>
+          <p class="text-sm sm:text-base text-blush-muted leading-relaxed">
+            Karamanoğlu Mehmetbey Üniversitesi’nde <strong class="font-semibold text-blush-ink">Veri Bilimi ve Analitiği 2. sınıf</strong> öğrencisiyim.
+            Makine öğrenmesi, veri görselleştirme ve Python tabanlı yazılım geliştirme üzerine çalışıyorum.
+            Aynı zamanda <strong class="font-semibold text-blush-ink">KMÜ Veri Bilimi Topluluğu</strong>’nda Eğitim ve İçerik Ekibi Başkanı olarak teknik içerikler üretiyor ve öğrenme sürecimi paylaşmayı seviyorum.
+          </p>
+        </div>
+
+        <!-- 3 Sütunlu Kategorize Yetkinlik Kartları -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <!-- Grup 1: Programlama -->
+          <div class="bg-white border border-blush-border rounded-xl p-5 space-y-3.5">
+            <h3 class="text-sm font-semibold text-blush-ink">Programlama</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Python</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">R</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">SQL</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">SQLite</span>
+            </div>
+          </div>
+
+          <!-- Grup 2: Veri Bilimi & ML -->
+          <div class="bg-white border border-blush-border rounded-xl p-5 space-y-3.5">
+            <h3 class="text-sm font-semibold text-blush-ink">Veri Bilimi &amp; ML</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Pandas</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Scikit-learn</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">PySpark</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Veri Görselleştirme</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">OpenCV</span>
+            </div>
+          </div>
+
+          <!-- Grup 3: Araçlar & Web -->
+          <div class="bg-white border border-blush-border rounded-xl p-5 space-y-3.5">
+            <h3 class="text-sm font-semibold text-blush-ink">Araçlar &amp; Web</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Git &amp; GitHub</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Flask</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">Jupyter</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">RStudio</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-blush-pill text-blush-tagText">HTML/CSS</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. ÖNE ÇIKAN PROJELER                                                 -->
+    <!-- ===================================================================== -->
+    <section id="projeler" class="py-16 sm:py-20 border-t border-blush-border">
+      <div class="space-y-8">
+
+        <!-- Başlık ve Kategori Filtre Sekmeleri -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-blush-ink">
+            Öne Çıkan Projeler
+          </h2>
+
+          <div class="flex flex-wrap gap-2" role="tablist" aria-label="Proje Kategorileri">
+            <button
+              type="button"
+              data-filter="all"
+              class="filter-tab px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-blush-accent text-white transition-colors"
+            >
+              Tümü
+            </button>
+            <button
+              type="button"
+              data-filter="ml"
+              class="filter-tab px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-blush-surface text-blush-muted border border-blush-border hover:text-blush-ink transition-colors"
+            >
+              Veri Bilimi &amp; ML
+            </button>
+            <button
+              type="button"
+              data-filter="web"
+              class="filter-tab px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-blush-surface text-blush-muted border border-blush-border hover:text-blush-ink transition-colors"
+            >
+              Yazılım &amp; Web
+            </button>
+          </div>
+        </div>
+
+        <!-- 2 Sütunlu Düz Proje Kartları (5 Proje) -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <!-- Proje 1 -->
+          <article class="project-card bg-white border border-blush-border rounded-xl p-6 flex flex-col justify-between hover:bg-blush-surface/60 transition-colors" data-category="web">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-mono text-blush-accent">Yazılım &amp; Web</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-semibold text-blush-ink leading-snug">
+                Bankacılık Kredi Karşılaştırma ve Risk Analiz Sistemi
+              </h3>
+              <p class="text-sm text-blush-muted leading-relaxed">
+                OOP mimarisi ve SQLite veritabanı ile geliştirilen, farklı kredi senaryolarını karşılaştırarak kullanıcıya risk analizi sunan uygulama.
+              </p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-blush-border/70 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Python</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">OOP</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">SQLite</span>
+              </div>
+              <a
+                href="https://github.com/kardelenakgul"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-xs sm:text-sm font-medium text-blush-accent hover:text-blush-hover underline-offset-4 hover:underline transition-colors"
+              >
+                GitHub'da İncele &rarr;
+              </a>
+            </div>
+          </article>
+
+          <!-- Proje 2 -->
+          <article class="project-card bg-white border border-blush-border rounded-xl p-6 flex flex-col justify-between hover:bg-blush-surface/60 transition-colors" data-category="ml">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-mono text-blush-accent">Veri Bilimi &amp; ML</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-semibold text-blush-ink leading-snug">
+                Film Öneri Sistemi
+              </h3>
+              <p class="text-sm text-blush-muted leading-relaxed">
+                İçerik tabanlı filtreleme ve benzerlik matrisleri kullanarak kullanıcı tercihlerine göre kişiselleştirilmiş film önerileri üreten model.
+              </p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-blush-border/70 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Python</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Scikit-learn</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">ML</span>
+              </div>
+              <a
+                href="https://github.com/kardelenakgul"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-xs sm:text-sm font-medium text-blush-accent hover:text-blush-hover underline-offset-4 hover:underline transition-colors"
+              >
+                GitHub'da İncele &rarr;
+              </a>
+            </div>
+          </article>
+
+          <!-- Proje 3 -->
+          <article class="project-card bg-white border border-blush-border rounded-xl p-6 flex flex-col justify-between hover:bg-blush-surface/60 transition-colors" data-category="ml">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-mono text-blush-accent">Veri Bilimi &amp; ML</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-semibold text-blush-ink leading-snug">
+                Müşteri Segmentasyonu
+              </h3>
+              <p class="text-sm text-blush-muted leading-relaxed">
+                K-Means kümeleme algoritması ve görselleştirme teknikleriyle müşteri davranışlarını anlamlı segmentlere ayıran veri analizi projesi.
+              </p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-blush-border/70 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Python</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">K-Means</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Veri Görselleştirme</span>
+              </div>
+              <a
+                href="https://github.com/kardelenakgul"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-xs sm:text-sm font-medium text-blush-accent hover:text-blush-hover underline-offset-4 hover:underline transition-colors"
+              >
+                GitHub'da İncele &rarr;
+              </a>
+            </div>
+          </article>
+
+          <!-- Proje 4 -->
+          <article class="project-card bg-white border border-blush-border rounded-xl p-6 flex flex-col justify-between hover:bg-blush-surface/60 transition-colors" data-category="web">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-mono text-blush-accent">Yazılım &amp; Web</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-semibold text-blush-ink leading-snug">
+                Perde Arkası — Film &amp; Dizi İnceleme Platformu
+              </h3>
+              <p class="text-sm text-blush-muted leading-relaxed">
+                Kullanıcıların film ve dizileri puanlayıp inceleme paylaşabildiği, Flask ve SQLite altyapısıyla geliştirilmiş sade web platformu.
+              </p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-blush-border/70 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Flask</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">SQLite</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">HTML/CSS</span>
+              </div>
+              <a
+                href="https://github.com/kardelenakgul"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-xs sm:text-sm font-medium text-blush-accent hover:text-blush-hover underline-offset-4 hover:underline transition-colors"
+              >
+                GitHub'da İncele &rarr;
+              </a>
+            </div>
+          </article>
+
+          <!-- Proje 5 -->
+          <article class="project-card bg-white border border-blush-border rounded-xl p-6 flex flex-col justify-between hover:bg-blush-surface/60 transition-colors" data-category="ml">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-mono text-blush-accent">Veri Bilimi &amp; ML</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-semibold text-blush-ink leading-snug">
+                Gerçek Zamanlı El Hareketi ve Mimik Tanıma
+              </h3>
+              <p class="text-sm text-blush-muted leading-relaxed">
+                OpenCV ile kamera akışı üzerinden el hareketlerini ve yüz ifadelerini algılayarak anlık tepki üreten bilgisayarlı görü uygulaması.
+              </p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-blush-border/70 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">Python</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blush-pill text-blush-tagText">OpenCV</span>
+              </div>
+              <a
+                href="https://github.com/kardelenakgul"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-xs sm:text-sm font-medium text-blush-accent hover:text-blush-hover underline-offset-4 hover:underline transition-colors"
+              >
+                GitHub'da İncele &rarr;
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 5. MEDIUM YAZILARI                                                    -->
+    <!-- ===================================================================== -->
+    <section id="yazilar" class="py-16 sm:py-20 border-t border-blush-border">
+      <div class="space-y-8">
+
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-blush-ink">
+            Medium Yazıları
+          </h2>
+          <a
+            href="https://medium.com/@krdlnakgl702670"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm font-medium text-blush-accent hover:text-blush-hover underline-offset-4 hover:underline transition-colors"
+          >
+            Tüm yazılar &rarr;
+          </a>
+        </div>
+
+        <!-- Sade Editoryal Yazı Listesi -->
+        <div class="space-y-4">
+
+          <!-- Yazı 1 -->
+          <a
+            href="https://medium.com/@krdlnakgl702670"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block bg-white border border-blush-border rounded-xl p-6 hover:bg-blush-surface transition-colors"
+          >
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-1.5">
+                <p class="text-xs font-mono text-blush-muted">Makine Öğrenmesi &bull; Nisan 2026</p>
+                <h3 class="text-base sm:text-lg font-semibold text-blush-ink group-hover:underline underline-offset-4 decoration-blush-accent">
+                  Karar Ağaçlarından Ormanlara: Makine Öğrenmesinde Mantıklı Seçimler Yapmak
+                </h3>
+              </div>
+              <span class="text-sm font-medium text-blush-accent shrink-0">
+                Oku &rarr;
+              </span>
+            </div>
+          </a>
+
+          <!-- Yazı 2 -->
+          <a
+            href="https://medium.com/@krdlnakgl702670"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block bg-white border border-blush-border rounded-xl p-6 hover:bg-blush-surface transition-colors"
+          >
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-1.5">
+                <p class="text-xs font-mono text-blush-muted">Bulut &amp; Veri &bull; Eylül 2026</p>
+                <h3 class="text-base sm:text-lg font-semibold text-blush-ink group-hover:underline underline-offset-4 decoration-blush-accent">
+                  Bulut Bilişim ve Büyük Veri: Huawei Cloud &amp; PySpark Deneyimlerim
+                </h3>
+              </div>
+              <span class="text-sm font-medium text-blush-accent shrink-0">
+                Oku &rarr;
+              </span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 6. EĞİTİM, DENEYİM & TOPLULUK                                         -->
+    <!-- ===================================================================== -->
+    <section id="deneyim" class="py-16 sm:py-20 border-t border-blush-border">
+      <div class="space-y-10">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-blush-ink">
+          Eğitim, Deneyim &amp; Topluluk
+        </h2>
+
+        <!-- Gül Kurusu Sol Kenarlıklı Minimal Zaman Çizelgesi -->
+        <div class="border-l-2 border-blush-border pl-6 sm:pl-8 space-y-8">
+
+          <!-- Öğe 1 -->
+          <div class="relative">
+            <span class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full bg-blush-accent" aria-hidden="true"></span>
+            <p class="text-xs font-mono text-blush-muted mb-1">2025 – Devam</p>
+            <h3 class="text-base sm:text-lg font-semibold text-blush-ink">
+              Karamanoğlu Mehmetbey Üniversitesi
+            </h3>
+            <p class="text-sm text-blush-muted mt-0.5">
+              Veri Bilimi ve Analitiği &bull; <span class="text-blush-tagText font-medium">1. Sınıf Dönem Birincisi</span>
+            </p>
+          </div>
+
+          <!-- Öğe 2 -->
+          <div class="relative">
+            <span class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full bg-blush-accent" aria-hidden="true"></span>
+            <p class="text-xs font-mono text-blush-muted mb-1">2025 – Devam</p>
+            <h3 class="text-base sm:text-lg font-semibold text-blush-ink">
+              KMÜ Veri Bilimi Topluluğu <span class="font-mono text-sm font-normal text-blush-accent">(@dsc.kmu)</span>
+            </h3>
+            <p class="text-sm text-blush-muted mt-0.5">
+              Eğitim ve İçerik Ekibi Başkanı
+            </p>
+          </div>
+
+          <!-- Öğe 3 -->
+          <div class="relative">
+            <span class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full bg-blush-accent" aria-hidden="true"></span>
+            <p class="text-xs font-mono text-blush-muted mb-1">Ağustos 2026</p>
+            <h3 class="text-base sm:text-lg font-semibold text-blush-ink">
+              Huawei &amp; SphereTech
+            </h3>
+            <p class="text-sm text-blush-muted mt-0.5">
+              Veri Bilimi, ML ve Bulut Bilişim Bootcamp
+            </p>
+          </div>
+
+          <!-- Öğe 4 -->
+          <div class="relative">
+            <span class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-2.5 h-2.5 rounded-full bg-blush-accent" aria-hidden="true"></span>
+            <p class="text-xs font-mono text-blush-muted mb-1">2025 – 2026</p>
+            <h3 class="text-base sm:text-lg font-semibold text-blush-ink">
+              YÖK Veri Analizi Okulu
+            </h3>
+            <p class="text-sm text-blush-muted mt-0.5">
+              Yapay Zeka Modülü
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 7. İLETİŞİM                                                           -->
+    <!-- ===================================================================== -->
+    <section id="iletisim" class="py-16 sm:py-20 border-t border-blush-border">
+      <div class="bg-blush-surface border border-blush-border rounded-2xl p-8 sm:p-10 text-center space-y-6">
+        <div class="max-w-lg mx-auto space-y-2.5">
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-blush-ink">
+            İletişim
+          </h2>
+          <p class="text-sm sm:text-base text-blush-muted leading-relaxed">
+            Birlikte çalışmak, proje üretmek veya tanışmak için bana ulaşabilirsin.
+          </p>
+        </div>
+
+        <!-- Sosyal Medya ve İletişim Butonları -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="https://github.com/kardelenakgul"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-lg text-sm font-medium bg-white text-blush-ink border border-blush-border hover:bg-blush-pill transition-colors"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://medium.com/@krdlnakgl702670"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-lg text-sm font-medium bg-white text-blush-ink border border-blush-border hover:bg-blush-pill transition-colors"
+          >
+            Medium
+          </a>
+          <a
+            href="https://instagram.com/kardelen.py"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-lg text-sm font-medium bg-white text-blush-ink border border-blush-border hover:bg-blush-pill transition-colors"
+          >
+            Instagram
+          </a>
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-lg text-sm font-medium bg-white text-blush-ink border border-blush-border hover:bg-blush-pill transition-colors"
+          >
+            LinkedIn
+          </a>
+        </div>
+
+        <!-- E-posta Kopyala ve Satır İçi Onay Bildirimi -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+          <button
+            id="copy-email-btn"
+            type="button"
+            data-email="iletisim@kardelenakgul.com"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium bg-blush-accent text-white hover:bg-blush-hover transition-colors"
+          >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            E-postayı Kopyala
+          </button>
+          <span
+            id="copy-feedback"
+            role="status"
+            aria-live="polite"
+            class="hidden px-3 py-1 rounded-full text-xs font-mono bg-blush-pill text-blush-tagText border border-blush-border"
+          >
+            Kopyalandı
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- ALT BİLGİ (FOOTER)                                                    -->
+  <!-- ===================================================================== -->
+  <footer class="border-t border-blush-border mt-8">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-blush-muted">
+      <p>&copy; 2026 Kardelen Akgül &bull; <span class="font-mono text-blush-accent">kardelen.py</span></p>
+      <a href="#anasayfa" class="hover:text-blush-ink transition-colors">Yukarı çık &uarr;</a>
+    </div>
+  </footer>
+
+  <!-- Minimal Bildirim Kutusu (CV İndir bilgilendirmesi için) -->
+  <div
+    id="cv-toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 right-5 z-50 max-w-xs hidden bg-white border border-blush-border rounded-xl px-4 py-3 text-xs sm:text-sm text-blush-ink"
+  >
+    CV PDF dosyanı repona ekleyip bu butona link verdiğinde doğrudan indirilebilir olacak.
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: MOBİL MENÜ, PROJE FİLTRESİ, E-POSTA KOPYALAMA, CV TOAST   -->
+  <!-- ===================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobil Menü Aç/Kapat
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('icon-open');
+      const iconClose = document.getElementById('icon-close');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      function setMenuState(open) {
+        mobileMenu.classList.toggle('hidden', !open);
+        iconOpen.classList.toggle('hidden', open);
+        iconClose.classList.toggle('hidden', !open);
+        menuBtn.setAttribute('aria-expanded', String(open));
+      }
+
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+          const isClosed = mobileMenu.classList.contains('hidden');
+          setMenuState(isClosed);
+        });
+
+        mobileLinks.forEach((link) => {
+          link.addEventListener('click', () => setMenuState(false));
+        });
+      }
+
+      // 2. Proje Kategori Filtreleme
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      const projectCards = document.querySelectorAll('.project-card');
+
+      filterTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const selected = tab.getAttribute('data-filter');
+
+          // Sekme stillerini güncelle
+          filterTabs.forEach((btn) => {
+            btn.classList.remove('bg-blush-accent', 'text-white');
+            btn.classList.add('bg-blush-surface', 'text-blush-muted', 'border', 'border-blush-border');
+          });
+          tab.classList.remove('bg-blush-surface', 'text-blush-muted', 'border', 'border-blush-border');
+          tab.classList.add('bg-blush-accent', 'text-white');
+
+          // Kartları kategoriye göre göster / gizle
+          projectCards.forEach((card) => {
+            const category = card.getAttribute('data-category');
+            const shouldShow = selected === 'all' || category === selected;
+            card.classList.toggle('hidden', !shouldShow);
+          });
+        });
+      });
+
+      // 3. E-postayı Kopyala (iFrame uyumlu execCommand ile)
+      const copyBtn = document.getElementById('copy-email-btn');
+      const copyFeedback = document.getElementById('copy-feedback');
+      let feedbackTimer = null;
+
+      if (copyBtn && copyFeedback) {
+        copyBtn.addEventListener('click', () => {
+          const email = copyBtn.getAttribute('data-email');
+          try {
+            const textarea = document.createElement('textarea');
+            textarea.value = email;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+          } catch (err) {
+            // Kopyalama desteklenmezse sessizce geç
+          }
+
+          copyFeedback.classList.remove('hidden');
+          if (feedbackTimer) clearTimeout(feedbackTimer);
+          feedbackTimer = setTimeout(() => {
+            copyFeedback.classList.add('hidden');
+          }, 2500);
+        });
+      }
+
+      // 4. CV İndir Bilgilendirme Kutusu
+      const cvBtn = document.getElementById('cv-download-btn');
+      const cvToast = document.getElementById('cv-toast');
+      let toastTimer = null;
+
+      if (cvBtn && cvToast) {
+        cvBtn.addEventListener('click', () => {
+          cvToast.classList.remove('hidden');
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            cvToast.classList.add('hidden');
+          }, 4000);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
